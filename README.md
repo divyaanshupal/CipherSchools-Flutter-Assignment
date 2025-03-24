@@ -18,7 +18,7 @@ This Expense Tracker is a Flutter application designed to help users manage thei
 3. **Financial Overview**
    - Current balance display
    - Total income and expense tracking
-   - Monthly transaction filtering
+   
 
 4. **Transaction History**
    - View all transactions in a list

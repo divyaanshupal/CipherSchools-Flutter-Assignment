@@ -71,10 +71,12 @@ class _ProfilePageState extends State<ProfilePage> {
       await DatabaseHelper.instance.clearUserData();
 
       // Navigate to the SignUp Screen
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => SignUpScreen()),
+            (route) => false, // This removes all previous routes
       );
+
     } catch (e) {
       _showError("Failed to sign out: $e");
     }

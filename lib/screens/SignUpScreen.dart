@@ -68,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
 
         // Navigate to the home screen or login screen
-        Navigator.pop(context); // Go back to the previous screen
+        //Navigator.pop(context); // Go back to the previous screen
       } on FirebaseAuthException catch (e) {
         // Handle errors
         String errorMessage = "An error occurred. Please try again.";
@@ -172,12 +172,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 🔙 Back Arrow
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
                 const SizedBox(height: 10),
 
                 // 📝 Sign Up Title

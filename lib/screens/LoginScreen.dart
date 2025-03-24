@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tracker/screens/home_screen.dart';
+
+
+import '../database/DatabaseHelper.dart';
+import 'HomeScreen.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -44,6 +47,10 @@ class _LoginPageState extends State<LoginPage> {
       );
       // Sign in to Firebase with the Google credential
       final UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+      // Save user ID and login status to Sqflite
+      await DatabaseHelper.instance.saveUserData(userCredential.user!.uid, true);
+
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Signed in as ${userCredential.user?.email}")),

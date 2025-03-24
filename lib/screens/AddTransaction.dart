@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tracker/database/database_helper.dart';
+import 'package:tracker/database/DatabaseHelper.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   final Function  onTransactionAdded; // Callback function

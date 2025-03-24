@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/database/database_helper.dart';
-import 'package:tracker/screens/profile_screen.dart';
+import 'package:tracker/database/DatabaseHelper.dart';
+import 'AddTransaction.dart';
+import 'ProfileScreen.dart';
 import 'TransactionHistory.dart';
-import 'add_transaction.dart';
+
 
 class HomeScreen extends StatefulWidget {
 

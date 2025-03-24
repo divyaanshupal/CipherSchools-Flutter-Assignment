@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tracker/screens/Login_Screen.dart';
-import 'package:tracker/screens/SignUp_Screen.dart';
+import 'package:tracker/database/DatabaseHelper.dart';
+
+import 'SignUpScreen.dart';
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -64,6 +66,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
       // Sign out from Google Sign-In (if applicable)
       await GoogleSignIn().signOut();
+
+      //clear user data from sqflite
+      await DatabaseHelper.instance.clearUserData();
 
       // Navigate to the SignUp Screen
       Navigator.pushReplacement(

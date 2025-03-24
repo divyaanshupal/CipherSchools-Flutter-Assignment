@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'package:your_app/home_screen.dart';
-
-import 'home_screen.dart'; // Import your main screen
+import '../database/DatabaseHelper.dart';
+import 'HomeScreen.dart';
+import 'SignUpScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -12,12 +12,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () {
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final isLoggedIn = await DatabaseHelper.instance.isLoggedIn();
+    await Future.delayed(Duration(seconds: 2)); // Simulate a delay
+
+    if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
-    });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignUpScreen()),
+      );
+    }
   }
 
   @override
@@ -29,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/splash_screen.png"),
-            fit: BoxFit.cover, // Ensures the image covers the full screen
+            fit: BoxFit.cover,
           ),
         ),
       ),

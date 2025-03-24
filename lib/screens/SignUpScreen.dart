@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tracker/screens/Login_Screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../database/DatabaseHelper.dart';
+import 'LoginScreen.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -59,14 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'createdAt': Timestamp.now(),
         });
 
-        // Store the username in the 'data' collection
-        await FirebaseFirestore.instance
-            .collection('data')
-            .doc(userCredential.user!.uid) // Use the user's UID as the document ID
-            .set({
-          'name': _nameController.text.trim(), // Save the username
-          'createdAt': Timestamp.now(),
-        });
+
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -123,6 +117,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       // Sign in to Firebase with the Google credential
       final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Save user ID and login status to Sqflite
+      await DatabaseHelper.instance.saveUserData(userCredential.user!.uid, true);
 
       // Store user data in Firestore
       await FirebaseFirestore.instance

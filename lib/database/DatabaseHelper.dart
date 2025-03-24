@@ -17,8 +17,9 @@ class DatabaseHelper {
     try {
       return await openDatabase(
         join(await getDatabasesPath(), 'tracker.db'),
-        version: 1,
+        version: 2,
         onCreate: (db, version) async {
+          //creating the transaction table
           await db.execute('''
             CREATE TABLE transactions (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +32,7 @@ class DatabaseHelper {
               description TEXT
             )
           ''');
-
+          //creating the balance table
           await db.execute('''
             CREATE TABLE balance (
               id INTEGER PRIMARY KEY,
@@ -43,24 +44,69 @@ class DatabaseHelper {
 
           // Insert initial balance
           await db.insert("balance", {'id': 1, 'balance': 0, 'income': 0, 'expense': 0});
+          
+          await db.execute('''
+            CREATE TABLE user_data (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id TEXT,
+              is_logged_in INTEGER DEFAULT 0
+            )
+          ''');
         },
+          onUpgrade: (db, oldVersion, newVersion) async {
+            if (oldVersion < 2) {
+              // Add the user_data table if upgrading from an older version
+              await db.execute('''
+              CREATE TABLE user_data (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                is_logged_in INTEGER DEFAULT 0
+              )
+            ''');
+            }
+          },
       );
     } catch (e) {
       print('Error initializing database: $e');
       rethrow;
     }
   }
+  Future<void> saveUserData(String userId, bool isLoggedIn) async {
+    final db = await database;
+    await db.delete('user_data'); // Clear any existing data
+    await db.insert('user_data', {
+      'user_id': userId,
+      'is_logged_in': isLoggedIn ? 1 : 0,
+    });
+  }
 
-  // // ✅ Insert a new transaction
-  // Future<int> insertTransaction(Map<String, dynamic> transaction) async {
-  //   try {
-  //     final db = await instance.database;
-  //     return await db.insert('transactions', transaction);
-  //   } catch (e) {
-  //     print('Error inserting transaction: $e');
-  //     return -1;
-  //   }
-  // }
+  // Get user ID
+  Future<String?> getUserId() async {
+    final db = await database;
+    final result = await db.query('user_data', limit: 1);
+    if (result.isNotEmpty) {
+      return result.first['user_id'] as String?;
+    }
+    return null;
+  }
+
+  //check wether the user is logged in
+  Future<bool> isLoggedIn() async {
+    final db = await database;
+    final result = await db.query('user_data', limit: 1);
+    if (result.isNotEmpty) {
+      return result.first['is_logged_in'] == 1;
+    }
+    return false;
+  }
+
+  // Clear user data (for logout)
+  Future<void> clearUserData() async {
+    final db = await database;
+    await db.delete('user_data');
+  }
+
+  //to insert the transaction
   Future<int> insertTransaction(Map<String, dynamic> transaction) async {
     try {
       final db = await database;

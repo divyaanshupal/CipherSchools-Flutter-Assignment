@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/database/DatabaseHelper.dart';
+import 'package:tracker/screens/FileScreen.dart';
 import 'AddTransaction.dart';
 import 'ProfileScreen.dart';
 import 'TransactionHistory.dart';
@@ -40,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
       _transactions = data;
     });
   }
+
+
+
 
 
   double _calculateTotalIncome(List<Map<String, dynamic>> transactions) {
@@ -188,6 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   "Recent Transaction",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+
                 TextButton(
                   onPressed: () {
                     // Add functionality for "See All" button
@@ -202,8 +207,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: Colors.purple, fontSize: 16),
                   ),
                 ),
+                SizedBox(width:10),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen(transactions: _transactions,),));
+                }, child: Text('Filter'),style: ElevatedButton.styleFrom(backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,),)
               ],
             ),
+            SizedBox(width: 10,),
             SizedBox(height: 10),
             _buildTransactionSection(),
           ],

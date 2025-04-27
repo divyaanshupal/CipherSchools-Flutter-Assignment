@@ -2,10 +2,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final DatabaseHelper instance = DatabaseHelper._init();
+  static final DatabaseHelper instance = DatabaseHelper._init();  //its a singleton property
   static Database? _database;
 
-  DatabaseHelper._init();
+  DatabaseHelper._init();  //init prevents creating multiple objects
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -16,7 +16,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     try {
       return await openDatabase(
-        join(await getDatabasesPath(), 'tracker.db'),
+        join(await getDatabasesPath(), 'tracker.db'),  //determine the patha where database file of sqflite is stored 
         version: 2,
         onCreate: (db, version) async {
           //creating the transaction table
@@ -83,7 +83,7 @@ class DatabaseHelper {
   // Get user ID
   Future<String?> getUserId() async {
     final db = await database;
-    final result = await db.query('user_data', limit: 1);
+    final result = await db.query('user_data', limit: 1);  //limit 1 is used so that querry can return only one row 
     if (result.isNotEmpty) {
       return result.first['user_id'] as String?;
     }
@@ -142,7 +142,7 @@ class DatabaseHelper {
       print("Updated Balance: $currentBalance, Income: $currentIncome, Expense: $currentExpense"); // Debug print
 
       // Insert the transaction
-      return await db.insert('transactions', transaction);
+      return await db.insert('transactions', transaction);    //db.insert to insert the data into the database 
     } catch (e) {
       print('Error inserting transaction: $e');
       return -1;
@@ -150,10 +150,9 @@ class DatabaseHelper {
   }
 
   // ✅ Get balance
-  // ✅ Get balance
   Future<double> getBalance() async {
     final db = await database;
-    List<Map<String, dynamic>> result = await db.query("balance", limit: 1);
+    List<Map<String, dynamic>> result = await db.query("balance", limit: 1);   //db.query to fetch the data from the database
 
     if (result.isNotEmpty) {
       return result.first["balance"] ?? 0.0;
@@ -164,7 +163,7 @@ class DatabaseHelper {
 // ✅ Update balance
   Future<void> updateBalance(double newBalance) async {
     final db = await database;
-    await db.update(
+    await db.update(                //db.update to update the database
       "balance",
       {"balance": newBalance},
       where: "id = 1",
@@ -239,7 +238,7 @@ class DatabaseHelper {
   Future<int> updateTransaction(int id, Map<String, dynamic> transaction) async {
     try {
       final db = await instance.database;
-      return await db.update('transactions', transaction, where: 'id = ?', whereArgs: [id]);
+      return await db.update('transactions', transaction, where: 'id = ?', whereArgs: [id]);  //WhereArgs is usded to transfer the data securily to the place holder , and prevent us from the sql injection
     } catch (e) {
       print('Error updating transaction: $e');
       return -1;

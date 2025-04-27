@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/screens/SignUpScreen.dart';
 import 'package:tracker/screens/SplashScreen.dart';
 import 'firebase_options.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.black),
         ),
       ),
-      home: SplashScreen(), // Always start with the Splash Screen
+      home: SignUpScreen(), // Always start with the Splash Screen
     );
   }
 }

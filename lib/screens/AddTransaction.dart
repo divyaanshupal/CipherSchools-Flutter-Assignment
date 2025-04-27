@@ -46,8 +46,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             width: 200,
             child: TextField(
               controller: _amountController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,     //keyboard of only digits
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],       //only allow the digits to get input
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
               decoration: InputDecoration(
@@ -100,7 +100,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
                   SizedBox(height: 10),
 
-                  if (selectedTransactionType == "Expense") ...[
+                  if (selectedTransactionType == "Expense") ...[        //... is known as spead operator , if true then will insert other many widgets inside the widget tree
                     _buildDropdown("Wallet", ["Cash", "Bank", "Credit Card"], selectedWallet, (value) {
                       setState(() => selectedWallet = value);
                     }),

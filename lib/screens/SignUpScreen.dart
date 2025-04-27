@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tracker/screens/HomeScreen.dart';
 
 import '../database/DatabaseHelper.dart';
 import 'LoginScreen.dart';
@@ -146,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
 
       // Navigate to the home screen or login screen
-      Navigator.pop(context); // Go back to the previous screen
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen())); // Go back to the previous screen
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error signing in with Google: $e")),
